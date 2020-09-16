@@ -19,7 +19,7 @@ WHITE		= \033[1;37m
 GOBASE := $(shell pwd)
 GOPATH := $(GOBASE)/vendor:$(GOBASE)
 GOBIN := $(GOBASE)/bin
-GOFILES := $(wildcard ./cmd/*.go)
+GOFILES := $(wildcard ./*.go)
 
 # Project Name
 PROJECTNAME := $(shell basename "$(PWD)")
