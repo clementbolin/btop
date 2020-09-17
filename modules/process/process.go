@@ -6,8 +6,8 @@ import (
 	ps "github.com/mitchellh/go-ps"
 )
 
-// ListAllProcess : display your all process running on your system
-func ListAllProcess() {
+// ListProcessUnix : display your all process running on your system
+func ListProcessUnix() {
 	listProcess, err := ps.Processes()
 	if err != nil {
 		log.Fatalln(err)
