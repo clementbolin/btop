@@ -15,7 +15,7 @@ func main() {
 	flag.Parse()
 
 	if *graphicFlag {
-		view.RunView("top-go")
+		view.RunView()
 		os.Exit(0)
 	}
 	if runtime.GOOS == "linux" {
