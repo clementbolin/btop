@@ -2,7 +2,7 @@ package view
 
 import (
 	"fmt"
-	// "strconv"
+	"strconv"
 
 	"github.com/rivo/tview"
 	"github.com/ClementBolin/topGo/modules/process"
@@ -27,10 +27,10 @@ func (app *Btop) Init() {
 
 // InitProcessText : init text view with process
 func (app *Btop) InitProcessText(process []process.UnixProcess) {
-	var processList string
+	var processList string = fmt.Sprintf("Name%sPid%sPpid\n\n", calculSpaceProcessList("Name"), calculSpaceProcessList("pid  "))
 
 	for _, item := range process {
-		processList = processList + fmt.Sprintf("name : %s, pid : %d, ppid : %d\n", item.GetName(), item.GetPid(), item.GetPpid())
+		processList = processList + fmt.Sprintf("%s%s%d%s%d\n", item.GetName(), calculSpaceProcessList(item.GetName()) ,item.GetPid(), calculSpaceProcessList(strconv.Itoa(item.GetPid())), item.GetPpid())
 	}
 	app.process = tview.NewTextView()
 	app.process.SetBorder(false)
@@ -56,17 +56,10 @@ func (app *Btop) InitNotifView() {
 
 /*------------- Export Function ----------------*/
 
-/*------------- No export Func -----------------*/
-
-// func initFlexApp() *tview.Flex {
-// 	flex := tview.NewFlex().
-// 			AddItem(textViewTest().SetBorder(true).SetTitle("top"), 0, 2, false).
-// 			AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-// 					AddItem(tview.NewBox().SetBorder(true).SetTitle("first option"), 0, 1, false).
-// 					AddItem(tview.NewBox().SetBorder(true).SetTitle("second option"), 0, 2, false).
-// 					AddItem(tview.NewBox().SetBorder(true).SetTitle("bottom option"), 0, 1, false), 0, 3, false).
-// 			AddItem(tview.NewBox().SetBorder(true).SetTitle("Right box"), 0, 2, false)
-// 	return flex
-// }
-
-/*------------- No export Func -----------------*/
+func calculSpaceProcessList(str string) string {
+	var totalSpace = 30;
+	for i := 0; i != len(str) - 1; i++ { totalSpace-- }
+	var spaceStr = ""
+	for i := 0; i != totalSpace; i++ { spaceStr = spaceStr + " " }
+	return spaceStr
+}
