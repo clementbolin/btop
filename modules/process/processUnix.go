@@ -22,7 +22,6 @@ func ListProcessUnix() []UnixProcess {
 		myProcess.SetPid(process.Pid())
 		myProcess.SetPpid(process.PPid())
 		unixListProcess = append(unixListProcess, myProcess)
-		// log.Println("exec:", process.Executable(), " ppid:", process.PPid(), "pid:", process.Pid());
 	}
 	return unixListProcess
 }

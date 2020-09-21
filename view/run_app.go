@@ -23,6 +23,7 @@ func RunView() {
 	}
 	app.Init()
 	app.InitProcessText(processList)
+	app.CreateBatteryTextView()
 	app.InitMidpView()
 	app.InitNotifView()
 	if err = app.app.SetRoot(app.flex, true).EnableMouse(true).Run(); err != nil {

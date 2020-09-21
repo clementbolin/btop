@@ -2,10 +2,12 @@ package view
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/rivo/tview"
 	"github.com/ClementBolin/topGo/modules/process"
+	"github.com/ClementBolin/topGo/modules/battery"
 )
 
 // Btop : struct who 
@@ -13,6 +15,7 @@ type Btop struct {
 	app		*tview.Application;
 	flex	*tview.Flex;
 	process *tview.TextView;
+	battery *tview.TextView;
 }
 
 
@@ -23,6 +26,7 @@ func (app *Btop) Init() {
 	app.app = tview.NewApplication()
 	app.flex = tview.NewFlex()
 	app.process = nil
+	app.battery = nil
 }
 
 // InitProcessText : init text view with process
@@ -33,7 +37,6 @@ func (app *Btop) InitProcessText(process []process.UnixProcess) {
 		processList = processList + fmt.Sprintf("%s%s%d%s%d\n", item.GetName(), calculSpaceProcessList(item.GetName()) ,item.GetPid(), calculSpaceProcessList(strconv.Itoa(item.GetPid())), item.GetPpid())
 	}
 	app.process = tview.NewTextView()
-	app.process.SetBorder(false)
 	app.process.SetText(processList)
 	app.process.SetTextAlign(tview.AlignLeft)
 	app.process.SetBorder(true)
@@ -41,10 +44,25 @@ func (app *Btop) InitProcessText(process []process.UnixProcess) {
 	app.flex.AddItem(app.process, 0, 1, false)
 }
 
+// CreateBatteryTextView : create, update Battery TextView
+func (app *Btop) CreateBatteryTextView() {
+	var durateList string = ""
+	statBattery, err := battery.FillStatBattery()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	durateList = fmt.Sprintf("%s\n\nPerceantage : %2.2f\nDuration : %s\n", durateList, statBattery.GetPercentage(), statBattery.GetDuration())
+	app.battery = tview.NewTextView()
+	app.battery.SetBorder(true)
+	app.battery.SetText(durateList)
+	app.battery.SetTextAlign(tview.AlignCenter)
+	app.battery.SetTitle("Battery")
+}
+
 // InitMidpView : init mid view with 3 empty box
 func (app *Btop) InitMidpView() {
 	app.flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-					AddItem(tview.NewBox().SetBorder(true).SetTitle("Top"), 0, 1, false).
+					AddItem(app.battery, 0, 1, false).
 					AddItem(tview.NewBox().SetBorder(true).SetTitle("Mid"), 0, 1, false).
 					AddItem(tview.NewBox().SetBorder(true).SetTitle("Bootom"), 0, 1, false), 0, 1, false)
 }
@@ -63,3 +81,4 @@ func calculSpaceProcessList(str string) string {
 	for i := 0; i != totalSpace; i++ { spaceStr = spaceStr + " " }
 	return spaceStr
 }
+
