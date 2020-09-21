@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/rivo/tview"
+	"github.com/gdamore/tcell"
 	"github.com/ClementBolin/topGo/modules/process"
 	"github.com/ClementBolin/topGo/modules/battery"
 )
@@ -31,16 +32,18 @@ func (app *Btop) Init() {
 
 // InitProcessText : init text view with process
 func (app *Btop) InitProcessText(process []process.UnixProcess) {
-	var processList string = fmt.Sprintf("Name%sPid%sPpid\n\n", calculSpaceProcessList("Name"), calculSpaceProcessList("pid  "))
+	var processList string = fmt.Sprintf("[green]Name[white]%s[red]Pid[white]%s[yellow]Ppid[white]\n\n", calculSpaceProcessList("Name"), calculSpaceProcessList("pid  "))
 
 	for _, item := range process {
-		processList = processList + fmt.Sprintf("%s%s%d%s%d\n", item.GetName(), calculSpaceProcessList(item.GetName()) ,item.GetPid(), calculSpaceProcessList(strconv.Itoa(item.GetPid())), item.GetPpid())
+		processList = processList + fmt.Sprintf("[green]%s[white]%s[red]%d[white]%s[yellow]%d[white]\n", item.GetName(), calculSpaceProcessList(item.GetName()) ,item.GetPid(), calculSpaceProcessList(strconv.Itoa(item.GetPid())), item.GetPpid())
 	}
 	app.process = tview.NewTextView()
+	app.process.SetDynamicColors(true)
 	app.process.SetText(processList)
 	app.process.SetTextAlign(tview.AlignLeft)
 	app.process.SetBorder(true)
 	app.process.SetTitle("top")
+	app.process.SetBorderColor(tcell.ColorBlue)
 	app.flex.AddItem(app.process, 0, 1, false)
 }
 
@@ -57,6 +60,7 @@ func (app *Btop) CreateBatteryTextView() {
 	app.battery.SetText(durateList)
 	app.battery.SetTextAlign(tview.AlignCenter)
 	app.battery.SetTitle("Battery")
+	app.battery.SetBorderColor(tcell.ColorBlueViolet)
 }
 
 // InitMidpView : init mid view with 3 empty box
