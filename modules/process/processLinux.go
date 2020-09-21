@@ -40,6 +40,21 @@ func (p *UnixProcess) GetName() string {
 	return p.name
 }
 
+// SetPid : set value pid
+func (p *UnixProcess) SetPid(pid int) {
+	p.pid = pid
+}
+
+// SetPpid : set value ppid
+func (p *UnixProcess) SetPpid(ppid int) {
+	p.ppid = ppid
+}
+
+// SetName : set value name
+func (p *UnixProcess) SetName(name string) {
+	p.name = name
+}
+
 // ListProcessLinux : return an list of all process runing in your system
 // ListProcessLinux or return an error if we can't read data, in your /proc folder
 func ListProcessLinux() ([]UnixProcess, error) {
