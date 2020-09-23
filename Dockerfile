@@ -6,9 +6,10 @@ ARG workdir="top-go"
 
 WORKDIR /${workdir}
 
-RUN apt-get update -y && apt-get install valgrind -y
+RUN apt-get update -y
 
-# ACtive when project is end
+# Active when project is end
+
 # COPY . .
 # RUN apt-get update -y && apt-get install git 
 # RUN git clone https://github.com/ClementBolin/top-go.git && cd top-go
