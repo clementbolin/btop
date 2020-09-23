@@ -1,16 +1,28 @@
 package main
 
 import (
-	"log"
 	"fmt"
 	"os"
 	"flag"
 	"runtime"
-	"time"
+	// t "time"
 
 	"github.com/ClementBolin/topGo/view"
-	"github.com/distatus/battery"
+	// "github.com/ClementBolin/topGo/modules/time"
 )
+
+// func test(up chan string, u time.Uptime) {
+// 	for {
+// 		u.UpdateUptime(up)
+// 	}
+// }
+
+// func test2(up chan string) {
+// 	for {
+// 		t.Sleep(10)
+// 		fmt.Println(<-up)
+// 	}
+// }
 
 func main() {
 	graphicFlag := flag.Bool("ui", false, "start user interface")
@@ -21,30 +33,14 @@ func main() {
 		os.Exit(0)
 	}
 	if runtime.GOOS == "linux" {
-		batteries, err := battery.GetAll()
-		if err != nil {
-			log.Fatalln(err)
-		}
-		for i, battery := range batteries {
-			t := battery.State
-			fmt.Printf("Bat %d :", i)
-			fmt.Println("state : ", t)
-			fmt.Println("BAT :", battery.Current / battery.Full * 100)
-		}
+		fmt.Println("Linux")
 	} else {
-		batteries, err := battery.GetAll()
-		if err != nil {
-			log.Fatalln(err)
-		}
-		for i, battery := range batteries {
-			t := byte(battery.State)
-			timeNum := battery.Current / battery.ChargeRate
-			duration, _ := time.ParseDuration(fmt.Sprintf("%fh", timeNum))
-			fmt.Printf("Bat %d :", i)
-			fmt.Println("state : ", string(t))
-			fmt.Println("BAT :", battery.Current / battery.Full * 100)
-			fmt.Println("DUR :", duration)
-		}
+		fmt.Println("Mac")
+		// hour := make(chan string)
+		// var uptime time.Uptime
+		// go test(hour, uptime)
+		// go test2(hour)
+		// t.Sleep(2000000000000)
 	}
 	os.Exit(0)
 }
