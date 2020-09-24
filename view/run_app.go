@@ -26,6 +26,7 @@ func RunView() {
 	app.CreateBatteryTextView()
 	app.InitMidpView()
 	app.InitNotifView()
+	app.UpdateBatteryTextView()
 	if err = app.app.SetRoot(app.flex, true).EnableMouse(true).Run(); err != nil {
 		log.Fatalln(err)
 	}

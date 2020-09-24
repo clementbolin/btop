@@ -33,3 +33,4 @@ package-lock.json
 
 dist/*
 bin/
+todoista/

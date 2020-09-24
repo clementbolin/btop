@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"os"
 
 	"github.com/rivo/tview"
 	"github.com/gdamore/tcell"
@@ -20,7 +21,6 @@ type Btop struct {
 	battery *tview.TextView;
 }
 
-
 /*------------- Export Function ----------------*/
 
 // Init : init app
@@ -29,6 +29,7 @@ func (app *Btop) Init() {
 	app.flex = tview.NewFlex()
 	app.process = nil
 	app.battery = nil
+	app.bindsInit()
 }
 
 // InitProcessText : init text view with process
@@ -76,13 +77,13 @@ func (app *Btop) CreateBatteryTextView() {
 func (app *Btop) InitMidpView() {
 	app.flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 					AddItem(app.battery, 0, 1, false).
-					AddItem(tview.NewBox().SetBorder(true).SetTitle("Mid"), 0, 2, false).
-					AddItem(tview.NewBox().SetBorder(true).SetTitle("Bootom"), 0, 2, false), 0, 1, false)
+					AddItem(tview.NewBox().SetBorder(true).SetTitle("Git Stat " + os.Getenv("PWD")), 0, 2, false).
+					AddItem(tview.NewBox().SetBorder(true).SetTitle("Docker Stat"), 0, 2, false), 0, 1, false)
 }
 
 // InitNotifView : Init notification view
 func (app *Btop) InitNotifView() {
-	app.flex.AddItem(tview.NewBox().SetBorder(true).SetTitle("Notification"), 0, 1, false)
+	app.flex.AddItem(tview.NewBox().SetBorder(true).SetTitle("Notification/Security"), 0, 1, false)
 }
 
 /*------------- Export Function ----------------*/

@@ -24,7 +24,7 @@ type AllUptime struct {
 	AvgFifteen	float64
 }
 
-// UpdateUptime : Update value in Uptime structure
+// InitUptime : Update value in Uptime structure
 func (u *Uptime) InitUptime() {
 	uptime := sigar.Uptime{}
 	uptime.Get()
@@ -63,4 +63,4 @@ func (u *Uptime) UpdateUptime() {
 	u.avgOne = avg.One
 	u.avgFive = avg.Five
 	u.avgFifteen = avg.Fifteen
-} 
+}
