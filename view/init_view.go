@@ -61,6 +61,7 @@ func (app *Btop) InitProcessText() {
 	app.process.SetTitle("top")
 	app.process.SetBorderColor(tcell.ColorBlue)
 	app.flex.AddItem(app.process, 0, 1, false)
+	UpdateTextView(refreshTextProcess, app.process, app.app)
 }
 
 // CreateBatteryTextView : create, update Battery TextView
@@ -85,6 +86,7 @@ func (app *Btop) CreateBatteryTextView() {
 	app.battery.SetTitle("Power System")
 	app.battery.SetBorderColor(tcell.ColorBlueViolet)
 	app.battery.SetDynamicColors(true)
+	UpdateTextView(refreshTextBattery, app.battery, app.app)
 
 }
 
