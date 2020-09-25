@@ -5,6 +5,7 @@ import (
 	"log"
 	"strconv"
 	"os"
+	"runtime"
 
 	"github.com/rivo/tview"
 	"github.com/gdamore/tcell"
@@ -33,12 +34,25 @@ func (app *Btop) Init() {
 }
 
 // InitProcessText : init text view with process
-func (app *Btop) InitProcessText(process []process.UnixProcess) {
+func (app *Btop) InitProcessText() {
 	var processList string = fmt.Sprintf("[green]Name[white]%s[red]Pid[white]%s[yellow]Ppid[white]\n\n", calculSpaceProcessList("Name"), calculSpaceProcessList("pid  "))
+	var processL []process.UnixProcess
+	var err error
 
-	for _, item := range process {
-		processList = processList + fmt.Sprintf("[green]%s[white]%s[red]%d[white]%s[yellow]%d[white]\n", item.GetName(), calculSpaceProcessList(item.GetName()) ,item.GetPid(), calculSpaceProcessList(strconv.Itoa(item.GetPid())), item.GetPpid())
+	if runtime.GOOS == "linux" {
+		processL, err = process.ListProcessLinux()
+	} else {
+		processL = process.ListProcessUnix()
 	}
+
+	if err != nil {
+		processList = fmt.Sprintf("[green]Name[white]%s[red]Pid[white]%s[yellow]Ppid[white]\n\n", calculSpaceProcessList("Name"), calculSpaceProcessList("pid  "))
+	} else {
+		for _, item := range processL {
+			processList = processList + fmt.Sprintf("[green]%s[white]%s[red]%d[white]%s[yellow]%d[white]\n", item.GetName(), calculSpaceProcessList(item.GetName()) ,item.GetPid(), calculSpaceProcessList(strconv.Itoa(item.GetPid())), item.GetPpid())
+		}
+	}
+
 	app.process = tview.NewTextView()
 	app.process.SetDynamicColors(true)
 	app.process.SetText(processList)
@@ -71,6 +85,7 @@ func (app *Btop) CreateBatteryTextView() {
 	app.battery.SetTitle("Power System")
 	app.battery.SetBorderColor(tcell.ColorBlueViolet)
 	app.battery.SetDynamicColors(true)
+
 }
 
 // InitMidpView : init mid view with 3 empty box
