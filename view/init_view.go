@@ -12,6 +12,7 @@ import (
 	"github.com/ClementBolin/topGo/modules/process"
 	"github.com/ClementBolin/topGo/modules/battery"
 	"github.com/ClementBolin/topGo/modules/time"
+	"github.com/ClementBolin/topGo/modules/gitstat"
 )
 
 // Btop : struct who 
@@ -20,6 +21,7 @@ type Btop struct {
 	flex	*tview.Flex;
 	process *tview.TextView;
 	battery *tview.TextView;
+	gitStat *tview.TextView;
 }
 
 /*------------- Export Function ----------------*/
@@ -31,6 +33,20 @@ func (app *Btop) Init() {
 	app.process = nil
 	app.battery = nil
 	app.bindsInit()
+}
+
+// InitGitStatText : init git stat text view
+func (app *Btop) InitGitStatText() {
+	gitStat := gitstat.GitStat()
+
+	app.gitStat = tview.NewTextView()
+	app.gitStat.SetBorder(true)
+	app.gitStat.SetText(gitStat)
+	app.gitStat.SetTextAlign(tview.AlignCenter)
+	app.gitStat.SetTitle("Git Stat " + os.Getenv("PWD"))
+	app.gitStat.SetBorderColor(tcell.ColorBurlyWood)
+	app.gitStat.SetWrap(true)
+	app.gitStat.SetDynamicColors(true)
 }
 
 // InitProcessText : init text view with process
@@ -60,7 +76,7 @@ func (app *Btop) InitProcessText() {
 	app.process.SetBorder(true)
 	app.process.SetTitle("top")
 	app.process.SetBorderColor(tcell.ColorBlue)
-	app.flex.AddItem(app.process, 0, 1, false)
+	app.flex.AddItem(app.process, 0, 2, false)
 	UpdateTextView(refreshTextProcess, app.process, app.app)
 }
 
@@ -94,13 +110,15 @@ func (app *Btop) CreateBatteryTextView() {
 func (app *Btop) InitMidpView() {
 	app.flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 					AddItem(app.battery, 0, 1, false).
-					AddItem(tview.NewBox().SetBorder(true).SetTitle("Git Stat " + os.Getenv("PWD")), 0, 2, false).
-					AddItem(tview.NewBox().SetBorder(true).SetTitle("Docker Stat"), 0, 2, false), 0, 1, false)
+					AddItem(tview.NewBox().SetTitle("I don't know").SetBorder(true), 0, 1, true).
+					AddItem(tview.NewBox().SetBorder(true).SetTitle("Notification"), 0, 2, false), 0, 1, false)
 }
 
 // InitNotifView : Init notification view
 func (app *Btop) InitNotifView() {
-	app.flex.AddItem(tview.NewBox().SetBorder(true).SetTitle("Notification/Security"), 0, 1, false)
+	app.flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+					AddItem(app.gitStat, 0, 1, false).
+					AddItem(tview.NewBox().SetTitle("Docker Stat").SetBorder(true), 0, 1, true), 0, 3, false)
 }
 
 /*------------- Export Function ----------------*/

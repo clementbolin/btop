@@ -10,6 +10,7 @@ func RunView() {
 
 	app.Init()
 	app.InitProcessText()
+	app.InitGitStatText()
 	app.CreateBatteryTextView()
 	app.InitMidpView()
 	app.InitNotifView()
