@@ -1,7 +1,6 @@
 package gitstat
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/ClementBolin/topGo/modules/gitStat/scan"
@@ -29,10 +28,9 @@ func clearPath(path string) string {
 func GitStat() string {
 	var emailFlag string = "clement.bolin@epitech.eu"
 
-	path := scan.ScanUniqueFolderGit("/Users/clementbolin/Epitech/Tek2/Go/topGo", emailFlag)
+	path := scan.ScanUniqueFolderGit(os.Getenv("PWD"), emailFlag)
 	if (path[0] == "") {
-		fmt.Printf("none commit find for %s\n\n", emailFlag)
-		os.Exit(0)
+		return "\n\n\n\n\nYou are not in git Repository, or we don't find commit from " + emailFlag
 	}
 	path[0] = clearPath(path[0])
 	return ui.CreateTableUI(path, emailFlag)

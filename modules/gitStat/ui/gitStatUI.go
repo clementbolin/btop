@@ -3,7 +3,6 @@ package ui
 import (
 	"fmt"
 	"sort"
-	"os"
 	"time"
 
 	"github.com/ClementBolin/topGo/modules/gitStat/git"
@@ -26,15 +25,6 @@ func createTable(arrayPath []string, email string) map[int]int {
 	for _, e := range arrayPath {
 		git.CountCommit(e, commitsTable, email, &etat)
 	}
-	if (etat == false) {
-		fmt.Println("We can't find commit for this email", email)
-		fmt.Println(`gitStat-go help:
-
-		-add		path folder to scan for Git repository, if not specified, scan current repository.
-		-email	email to scan in Git commit, required parameter
-		-r	scans all folders recursively and adds up all commits`)
-		os.Exit(0)
-	}
 	return commitsTable
 }
 
@@ -42,8 +32,8 @@ func createTable(arrayPath []string, email string) map[int]int {
 func printCommitsStat(commits map[int]int) string {
 	key := sortMapIntoSlice(commits)
 	cols := buildCol(key, commits)
-	ui := printCells(cols)
-	return ui
+	str := printCells(cols)
+	return str
 }
 
 func buildCol(keys []int, commits map[int]int) map[int]column {
@@ -82,31 +72,30 @@ func sortMapIntoSlice(m map[int]int) []int {
 
 // printCells prints the cells of the graph
 func printCells(cols map[int]column) string {
-	var ui string
-	ui = fmt.Sprintf("%s%s", ui, printMonths())
+	var str string = "\n\n\n\n\n"
+	str = fmt.Sprintf("%s%s", str, printMonths())
 	for j := 6; j >= 0; j-- {
 		for i := weekSixMonths + 1; i >= 0; i-- {
 			if i == weekSixMonths+1 {
-				ui = fmt.Sprintf("%s%s", ui, printDayCol(j))
+				str = fmt.Sprintf("%s%s", str, printDayCol(j))
 			}
 			if col, ok := cols[i]; ok {
 				//special case today
 				if i == 0 && j == git.CalcOffset()-1 {
-					ui = fmt.Sprintf("%s%s", ui, printCell(col[j], true))
+					str = fmt.Sprintf("%s%s", str, printCell(col[j], true))
 					continue
 				} else {
 					if len(col) > j {
-						ui = fmt.Sprintf("%s%s", ui, printCell(col[j], false))
+						str = fmt.Sprintf("%s%s", str, printCell(col[j], false))
 						continue
 					}
 				}
 			}
-			printCell(0, false)
+			str = fmt.Sprintf("%s%s", str, printCell(0, false))
 		}
-		ui = fmt.Sprintf("%s\n", ui)
-		return ui
+		str = fmt.Sprintf("%s\n", str)
 	}
-	return ui
+	return str
 }
 
 // printMonths prints the month names in the first line, determining when the month
@@ -114,8 +103,7 @@ func printCells(cols map[int]column) string {
 func printMonths() string {
 	week := git.GetActualDate(time.Now()).Add(-(daySixMonths * time.Hour * 24))
 	month := week.Month()
-	var str string
-	str = fmt.Sprintf("%s         ", str)
+	str := fmt.Sprintf("         ")
 	for {
 		if week.Month() != month {
 			str = fmt.Sprintf("%s%s ", str, week.Month().String()[:3])
@@ -149,24 +137,24 @@ func printDayCol(day int) string {
 }
 
 func printCell(val int, today bool) string {
-	var str2 string
-	escape := "[red]" // \033[0;37;30m
+	var strReturn string
+	escape := "[white]" // \033[0;37;30m
 	switch {
 	case val > 0 && val < 5:
-		escape = "[green]" // \033[1;30;47m
+		escape = "[#ABD595]" // \033[1;30;47m
 	case val >= 5 && val < 10:
-		escape = "[blue]" // \033[1;30;43m
+		escape = "[#548E2F]" // \033[1;30;43m
 	case val >= 10:
-		escape = "[black]" // \033[1;30;42m
+		escape = "[#2C7404]" // \033[1;30;42m
 	}
 
 	if today {
-		escape = "[gree]" // \033[1;37;45m
+		escape = "[#AE07F1]" // \033[1;37;45m
 	}
 
 	if val == 0 {
-		str2 = fmt.Sprintf("%s%s  - [white]", str2, escape) // \033[0m
-		return str2
+		strReturn = fmt.Sprintf(strReturn+escape + "  - " + "[white]") // \033[0m
+		return strReturn
 	}
 
 	str := "  %d "
@@ -177,13 +165,18 @@ func printCell(val int, today bool) string {
 		str = "%d "
 	}
 
-	str2 = fmt.Sprintf("%s%s%s[white]%d", str2, escape, str, val) // \033[0m
-	return str2
+	strReturn = fmt.Sprintf(strReturn+escape+str+"[white]", val) // \033[0m"
+	return strReturn
+}
+
+func createIndex(str *string) {
+	*str = fmt.Sprintf("%s\n\n[#AE07F1]actual day[white]\t[#ABD595]less 5 commits[white]\t[#548E2F]more 5 commits[white]\t[#2C7404]more 10 commits[white]", *str)
 }
 
 // CreateTableUI : display commit in your terminal
 func CreateTableUI(arrayPath []string, email string) string {
 	commits := createTable(arrayPath, email)
-	ui := printCommitsStat(commits)
-	return ui
+	str := printCommitsStat(commits)
+	createIndex(&str)
+	return str
 }
