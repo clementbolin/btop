@@ -5,24 +5,10 @@ import (
 	"os"
 	"flag"
 	"runtime"
-	// t "time"
 
 	"github.com/ClementBolin/topGo/view"
-	// "github.com/ClementBolin/topGo/modules/time"
+	"github.com/ClementBolin/topGo/modules/docker"
 )
-
-// func test(up chan string, u time.Uptime) {
-// 	for {
-// 		u.UpdateUptime(up)
-// 	}
-// }
-
-// func test2(up chan string) {
-// 	for {
-// 		t.Sleep(10)
-// 		fmt.Println(<-up)
-// 	}
-// }
 
 func main() {
 	graphicFlag := flag.Bool("ui", false, "start user interface")
@@ -36,11 +22,9 @@ func main() {
 		fmt.Println("Linux")
 	} else {
 		fmt.Println("Mac")
-		// hour := make(chan string)
-		// var uptime time.Uptime
-		// go test(hour, uptime)
-		// go test2(hour)
-		// t.Sleep(2000000000000)
+		var docker docker.DockerWidget
+		docker.Init()
+		docker.GetSystemInfo()
 	}
 	os.Exit(0)
 }

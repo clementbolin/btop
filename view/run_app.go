@@ -9,6 +9,7 @@ func RunView() {
 	var app Btop
 
 	app.Init()
+	app.InitDockerStatText()
 	app.InitProcessText()
 	app.InitGitStatText()
 	app.CreateBatteryTextView()

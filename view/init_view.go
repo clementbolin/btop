@@ -13,15 +13,17 @@ import (
 	"github.com/ClementBolin/topGo/modules/battery"
 	"github.com/ClementBolin/topGo/modules/time"
 	"github.com/ClementBolin/topGo/modules/gitstat"
+	"github.com/ClementBolin/topGo/modules/docker"
 )
 
 // Btop : struct who 
 type Btop struct {
-	app		*tview.Application;
-	flex	*tview.Flex;
-	process *tview.TextView;
-	battery *tview.TextView;
-	gitStat *tview.TextView;
+	app			*tview.Application;
+	flex		*tview.Flex;
+	process 	*tview.TextView;
+	battery 	*tview.TextView;
+	gitStat 	*tview.TextView;
+	dockerStat 	*tview.TextView;
 }
 
 /*------------- Export Function ----------------*/
@@ -32,6 +34,7 @@ func (app *Btop) Init() {
 	app.flex = tview.NewFlex()
 	app.process = nil
 	app.battery = nil
+	app.dockerStat = nil
 	app.bindsInit()
 }
 
@@ -44,9 +47,27 @@ func (app *Btop) InitGitStatText() {
 	app.gitStat.SetText(gitStat)
 	app.gitStat.SetTextAlign(tview.AlignCenter)
 	app.gitStat.SetTitle("Git Stat " + os.Getenv("PWD"))
-	app.gitStat.SetBorderColor(tcell.ColorBurlyWood)
+	app.gitStat.SetBorderColor(tcell.ColorBlue)
 	app.gitStat.SetWrap(true)
 	app.gitStat.SetDynamicColors(true)
+}
+
+// InitDockerStatText : init Docker widget TextView
+func (app *Btop) InitDockerStatText() {
+	var docker docker.DockerWidget
+
+	docker.Init()
+	docker.GetSystemInfo()
+	docker.GetContainerInfo()
+
+	app.dockerStat = tview.NewTextView()
+	app.dockerStat.SetBorder(true)
+	app.dockerStat.SetText(docker.GetBuffer())
+	app.dockerStat.SetTextAlign(tview.AlignCenter)
+	app.dockerStat.SetTitle("Docker Stat")
+	app.dockerStat.SetBorderColor(tcell.ColorBurlyWood)
+	app.dockerStat.SetWrap(true)
+	app.dockerStat.SetDynamicColors(true)
 }
 
 // InitProcessText : init text view with process
@@ -118,7 +139,7 @@ func (app *Btop) InitMidpView() {
 func (app *Btop) InitNotifView() {
 	app.flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 					AddItem(app.gitStat, 0, 1, false).
-					AddItem(tview.NewBox().SetTitle("Docker Stat").SetBorder(true), 0, 1, true), 0, 3, false)
+					AddItem(app.dockerStat, 0, 1, true), 0, 3, false)
 }
 
 /*------------- Export Function ----------------*/
