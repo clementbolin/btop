@@ -14,6 +14,7 @@ import (
 	"github.com/ClementBolin/topGo/modules/time"
 	"github.com/ClementBolin/topGo/modules/gitstat"
 	"github.com/ClementBolin/topGo/modules/docker"
+	"github.com/ClementBolin/topGo/modules/system"
 )
 
 // Btop : struct who 
@@ -24,6 +25,7 @@ type Btop struct {
 	battery 	*tview.TextView;
 	gitStat 	*tview.TextView;
 	dockerStat 	*tview.TextView;
+	system 		*tview.TextView;
 }
 
 /*------------- Export Function ----------------*/
@@ -36,6 +38,22 @@ func (app *Btop) Init() {
 	app.battery = nil
 	app.dockerStat = nil
 	app.bindsInit()
+}
+
+//InitSystemText : init system widget TextView
+func (app *Btop) InitSystemText() {
+	var sys system.SysInfo
+
+	buffer := sys.Init()
+
+	app.system = tview.NewTextView()
+	app.system.SetBorder(true)
+	app.system.SetText(buffer)
+	app.system.SetTextAlign(tview.AlignCenter)
+	app.system.SetTitle("System")
+	app.system.SetBorderColor(tcell.ColorBurlyWood)
+	app.system.SetWrap(true)
+	app.system.SetDynamicColors(true)
 }
 
 // InitGitStatText : init git stat text view
@@ -131,7 +149,7 @@ func (app *Btop) CreateBatteryTextView() {
 func (app *Btop) InitMidpView() {
 	app.flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 					AddItem(app.battery, 0, 1, false).
-					AddItem(tview.NewBox().SetTitle("I don't know").SetBorder(true), 0, 1, true).
+					AddItem(app.system, 0, 1, true).
 					AddItem(tview.NewBox().SetBorder(true).SetTitle("Notification"), 0, 2, false), 0, 1, false)
 }
 
