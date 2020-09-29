@@ -38,6 +38,12 @@ func (h *History) GetHistoryCmd() {
 			h.cmd[j] = getNameCmdZSH(tabData[i])
 			j++
 		}
+	case "bash":
+		h.cmd = make([]string, 1)
+		h.cmd[0] = "Bash history in development"
+	case "fish":
+		h.cmd = make([]string, 1)
+		h.cmd[0] = "fish history in development"
 	default:
 		h.cmd = make([]string, 1)
 		h.cmd[0] = "Failed to load history"
