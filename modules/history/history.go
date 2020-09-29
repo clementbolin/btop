@@ -43,7 +43,7 @@ func (h *History) GetHistoryCmd() {
 		h.cmd[0] = "Bash history in development"
 	case "fish":
 		h.cmd = make([]string, 1)
-		h.cmd[0] = "fish history in development"
+		h.cmd[0] = "fish history in developmentd"
 	default:
 		h.cmd = make([]string, 1)
 		h.cmd[0] = "Failed to load history"
