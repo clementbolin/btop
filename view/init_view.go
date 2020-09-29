@@ -15,6 +15,7 @@ import (
 	"github.com/ClementBolin/topGo/modules/gitstat"
 	"github.com/ClementBolin/topGo/modules/docker"
 	"github.com/ClementBolin/topGo/modules/system"
+	"github.com/ClementBolin/topGo/modules/history"
 )
 
 // Btop : struct who 
@@ -26,6 +27,7 @@ type Btop struct {
 	gitStat 	*tview.TextView;
 	dockerStat 	*tview.TextView;
 	system 		*tview.TextView;
+	history 	*tview.TextView;
 }
 
 /*------------- Export Function ----------------*/
@@ -38,6 +40,24 @@ func (app *Btop) Init() {
 	app.battery = nil
 	app.dockerStat = nil
 	app.bindsInit()
+}
+
+// InitHistoryTextView : init history widget textView
+func (app *Btop) InitHistoryTextView() {
+	var history history.History
+
+	history.GetHistoryCmd()
+	buffer := history.GetCmd()
+
+	app.history = tview.NewTextView()
+	app.history.SetBorder(true)
+	app.history.SetText(buffer)
+	app.history.SetTextAlign(tview.AlignLeft)
+	app.history.SetTitle("History")
+	app.history.SetBorderColor(tcell.ColorBurlyWood)
+	app.history.SetWrap(true)
+	app.history.SetDynamicColors(true)
+	UpdateTextView(refreshHistory, app.history, app.app)
 }
 
 //InitSystemText : init system widget TextView
@@ -150,7 +170,7 @@ func (app *Btop) InitMidpView() {
 	app.flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 					AddItem(app.battery, 0, 1, false).
 					AddItem(app.system, 0, 1, true).
-					AddItem(tview.NewBox().SetBorder(true).SetTitle("Notification"), 0, 2, false), 0, 1, false)
+					AddItem(app.history, 0, 2, false), 0, 1, false)
 }
 
 // InitNotifView : Init notification view

@@ -9,6 +9,7 @@ import (
 	"github.com/ClementBolin/topGo/modules/time"
 	"github.com/ClementBolin/topGo/modules/battery"
 	"github.com/ClementBolin/topGo/modules/process"
+	"github.com/ClementBolin/topGo/modules/history"
 )
 
 // refreshTextBattery : function who refresh text battery
@@ -49,4 +50,12 @@ func refreshTextProcess(text chan string) {
 		}
 	}
 	text <- processList
+}
+
+func refreshHistory(text chan string) {
+	var history history.History
+
+	history.GetHistoryCmd()
+	buffer := history.GetCmd()
+	text <- buffer
 }
