@@ -33,14 +33,14 @@ The goal of this project, is to display many information of your system
 
 #### How To Install
 
-    git clone https://github.com/ClementBolin/top-go
-    cd top-go
+    git clone https://github.com/ClementBolin/btop
+    cd btop
     chmod +x ./install.sh
     ./install.sh
 
 #### How to run with docker
 
-    git clone https://github.com/ClementBolin/top-go
-    cd top-go
+    git clone https://github.com/ClementBolin/btop
+    cd btop
     docker build -t btop .
     docker run btop
