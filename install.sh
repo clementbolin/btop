@@ -1,12 +1,12 @@
-if [[ $EUID -ne 0 ]]; then
+if [ $EUID -ne 0 ]; then
     echo "You must run this with superuser priviliges.  Try \"sudo ./install.sh\"" 2>&1
     exit 0
 fi
 
-unamestr=`uname`
+unamestr="$(uname -s)"
 email=""
 email_confirm=""
-if [[ "$unamestr" == 'Linux' ]]; then
+if [ "$unamestr" == 'Linux' ]; then
     echo "Start install Btop..."
     make build
     sudo mv ./bin/btop /usr/local/bin
@@ -18,7 +18,7 @@ if [[ "$unamestr" == 'Linux' ]]; then
     echo $email > .btop_config
     mv .btop_config ~/
     echo "Btop is available on your computer. Try \"btop\" for start"
-elif [[ "$unamestr" == 'Darwin' ]]; then
+elif [ "$unamestr" == 'Darwin' ]; then
     echo "Start install Btop..."
     make build
     sudo mv ./bin/btop /usr/local/bin
