@@ -42,5 +42,7 @@ The goal of this project, is to display many information of your system
 
     git clone https://github.com/ClementBolin/btop
     cd btop
-    docker build -t btop .
-    docker run btop
+    docker build -t btop . && docker run -it btop /bin/bash
+    ./bin/btop
+
+This project is based on [WTF](https://github.com/wtfutil/wtf) and use [tview](https://github.com/rivo/tview) and [tcell](https://github.com/gdamore/tcell) library

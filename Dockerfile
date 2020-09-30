@@ -13,5 +13,3 @@ RUN chmod +x ./install.sh
 RUN echo "clement.bolin@epitech.eu" > .btop_config
 RUN mv .btop_config ~/
 RUN make build
-
-CMD ["./bin/btop"]
