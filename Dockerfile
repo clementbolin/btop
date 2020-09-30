@@ -2,17 +2,14 @@ FROM golang:1.15
 
 LABEL version="1.0" maintainer="Clement Bolin <clement.bolin@epitech.eu>"
 
-ARG workdir="top-go"
+ARG workdir="btop"
 
 WORKDIR /${workdir}
 
-RUN apt-get update -y
+COPY . .
 
-# Active when project is end
+RUN apt-get update -y && apt-get install git 
+RUN git clone https://github.com/ClementBolin/btop && cd btop
+RUN chmod +x ./install.sh
 
-# COPY . .
-# RUN apt-get update -y && apt-get install git 
-# RUN git clone https://github.com/ClementBolin/top-go.git && cd top-go
-# RUN make build 
-
-# CMD ["./bin/${workdir}"]
+CMD ["./install.sh"]
