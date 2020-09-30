@@ -36,7 +36,7 @@ The goal of this project, is to display many information of your system
     git clone https://github.com/ClementBolin/btop
     cd btop
     chmod +x ./install.sh
-    ./install.sh
+    sudo ./install.sh
 
 #### How to run with docker
 

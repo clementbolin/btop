@@ -183,7 +183,7 @@ func (app *Btop) InitNotifView() {
 /*------------- Export Function ----------------*/
 
 func calculSpaceProcessList(str string) string {
-	var totalSpace = 30;
+	var totalSpace = 25;
 	for i := 0; i != len(str) - 1; i++ { totalSpace-- }
 	var spaceStr = ""
 	for i := 0; i != totalSpace; i++ { spaceStr = spaceStr + " " }
