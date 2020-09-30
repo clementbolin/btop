@@ -8,8 +8,10 @@ WORKDIR /${workdir}
 
 COPY . .
 
-RUN apt-get update -y && apt-get install git 
-RUN git clone https://github.com/ClementBolin/btop && cd btop
+RUN apt-get update -y
 RUN chmod +x ./install.sh
+RUN echo "clement.bolin@epitech.eu" > .btop_config
+RUN mv .btop_config ~/
+RUN make build
 
-CMD ["./install.sh"]
+CMD ["./bin/btop"]
