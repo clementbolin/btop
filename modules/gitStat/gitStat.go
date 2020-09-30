@@ -2,6 +2,9 @@ package gitstat
 
 import (
 	"os"
+	"os/user"
+	"io/ioutil"
+	"strings"
 
 	"github.com/ClementBolin/topGo/modules/gitStat/scan"
 	"github.com/ClementBolin/topGo/modules/gitStat/ui"
@@ -24,9 +27,23 @@ func clearPath(path string) string {
 	return path
 }
 
+func readEmail() string {
+	user, _ := user.Current()
+	datas, err := ioutil.ReadFile(user.HomeDir + "/.btop_config")
+	if err != nil {
+		return ""
+	}
+	return strings.Replace(string(datas), "\n", "", -1)
+}
+
 // GitStat : GitStat module
 func GitStat() string {
-	var emailFlag string = "clement.bolin@epitech.eu"
+	var emailFlag string = readEmail()
+	
+	if (emailFlag == "") {
+		var home = strings.Split(os.Getenv("HOME"), "=")
+		return "\n\n\n\n\n\n\n\n\nCreate file name .btop_config in your [red]" + home[0] + "[white] and place email adress use by your commits"
+	}
 
 	path := scan.ScanUniqueFolderGit(os.Getenv("PWD"), emailFlag)
 	if (path[0] == "") {

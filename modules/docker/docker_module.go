@@ -35,7 +35,6 @@ func (docker *DockerWidget) GetSystemInfo() {
 	info, err := docker.cli.Info(context.Background())
 	if err != nil {
 		docker.buffer = "[#21BDC2]Sytem[white] :\n\nCould not get docker system info\nCannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?"
-		fmt.Println(err)
 		return
 	}
 	diskUsage, err := docker.cli.DiskUsage(context.Background())
