@@ -71,7 +71,7 @@ func (app *Btop) InitSystemText() {
 	app.system.SetText(buffer)
 	app.system.SetTextAlign(tview.AlignCenter)
 	app.system.SetTitle("System")
-	app.system.SetBorderColor(tcell.ColorBurlyWood)
+	app.system.SetBorderColor(tcell.ColorRed)
 	app.system.SetWrap(true)
 	app.system.SetDynamicColors(true)
 }
@@ -103,7 +103,7 @@ func (app *Btop) InitDockerStatText() {
 	app.dockerStat.SetText(docker.GetBuffer())
 	app.dockerStat.SetTextAlign(tview.AlignCenter)
 	app.dockerStat.SetTitle("Docker Stat")
-	app.dockerStat.SetBorderColor(tcell.ColorBurlyWood)
+	app.dockerStat.SetBorderColor(tcell.ColorAquaMarine)
 	app.dockerStat.SetWrap(true)
 	app.dockerStat.SetDynamicColors(true)
 }
