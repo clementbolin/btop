@@ -32,6 +32,7 @@ The goal of this project, is to display many information of your system
 - [ ] Updater
 
 #### How To Install
+if you don't have the Golang compiler, you can download it [here](https://golang.org)
 
     git clone https://github.com/ClementBolin/btop
     cd btop
