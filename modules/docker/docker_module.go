@@ -80,6 +80,6 @@ func (docker *DockerWidget) GetContainerInfo() {
 	// Create buffer list container
 	docker.buffer = fmt.Sprintf("%s\n\n[#21BDC2]Container[white] :\n", docker.buffer)
 	for _, c := range container {
-		docker.buffer = fmt.Sprintf("%s\n\tID : %sCommand : %sName : %sStatus : %s", docker.buffer, c.ID, c.Command, c.Names[0], c.Status)
+		docker.buffer = fmt.Sprintf("%s\n[blue]ID[white] : %s [red]Command[white] : %s [yellow]Name[white] : %s [green]Status[white] : %s", docker.buffer, c.ID, c.Command, c.Names[0], c.Status)
 	}
 }

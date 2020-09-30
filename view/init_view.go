@@ -12,7 +12,7 @@ import (
 	"github.com/ClementBolin/topGo/modules/process"
 	"github.com/ClementBolin/topGo/modules/battery"
 	"github.com/ClementBolin/topGo/modules/time"
-	"github.com/ClementBolin/topGo/modules/gitstat"
+	"github.com/ClementBolin/topGo/modules/gitstatistic"
 	"github.com/ClementBolin/topGo/modules/docker"
 	"github.com/ClementBolin/topGo/modules/system"
 	"github.com/ClementBolin/topGo/modules/history"
@@ -78,7 +78,7 @@ func (app *Btop) InitSystemText() {
 
 // InitGitStatText : init git stat text view
 func (app *Btop) InitGitStatText() {
-	gitStat := gitstat.GitStat()
+	gitStat := gitstatistic.GitStat()
 
 	app.gitStat = tview.NewTextView()
 	app.gitStat.SetBorder(true)
@@ -150,7 +150,7 @@ func (app *Btop) CreateBatteryTextView() {
 
 	statBattery, err := battery.FillStatBattery()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("je te baise")
 	}
 
 	durateList = fmt.Sprintf("%s\n\nPerceantage : %2.2f\nDuration : %s\n", header, statBattery.GetPercentage(), statBattery.GetDuration())

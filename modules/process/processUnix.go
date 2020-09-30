@@ -1,7 +1,6 @@
 package process
 
 import (
-	"log"
 
 	ps "github.com/mitchellh/go-ps"
 )
@@ -10,10 +9,8 @@ import (
 func ListProcessUnix() []UnixProcess {
 	var unixListProcess []UnixProcess
 
-	listProcess, err := ps.Processes()
-	if err != nil {
-		log.Fatalln(err)
-	}
+	listProcess, _ := ps.Processes()
+
 	for item := range listProcess {
 		var process ps.Process
 		var myProcess UnixProcess
