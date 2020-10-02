@@ -12,7 +12,7 @@ func RunView() {
 	app.InitDockerStatText()
 	app.InitHistoryTextView()
 	app.InitSystemText()
-	app.InitProcessText()
+	// app.InitProcessText()
 	app.InitGitStatText()
 
 	app.CreateBatteryTextView()
