@@ -115,7 +115,7 @@ func (app *Btop) InitProcessText() {
 	var err error
 
 	if runtime.GOOS == "linux" {
-		processL, err = process.ListProcessLinux()
+		processL = process.ListProcessUnix()
 	} else {
 		processL = process.ListProcessUnix()
 	}

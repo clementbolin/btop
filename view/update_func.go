@@ -37,7 +37,7 @@ func refreshTextProcess(text chan string) {
 	var err error
 
 	if runtime.GOOS == "linux" {
-		processL, err = process.ListProcessLinux()
+		processL = process.ListProcessUnix()
 	} else {
 		processL = process.ListProcessUnix()
 	}

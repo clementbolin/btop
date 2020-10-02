@@ -1,4 +1,4 @@
-if [ $EUID -ne 0 ]; then
+case [ $EUID -ne 0 ]; then
     echo "You must run this with superuser priviliges.  Try \"sudo ./install.sh\"" 2>&1
     exit 0
 fi
