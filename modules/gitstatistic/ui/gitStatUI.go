@@ -82,6 +82,9 @@ func printCells(cols map[int]column) string {
 			if col, ok := cols[i]; ok {
 				//special case today
 				if i == 0 && j == git.CalcOffset()-1 {
+					if j >= 6 {
+						j--
+					}
 					str = fmt.Sprintf("%s%s", str, printCell(col[j], true))
 					continue
 				} else {

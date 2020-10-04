@@ -2,6 +2,7 @@ package view
 
 import (
 	"log"
+	"runtime"
 )
 
 // RunView : init and start default view
@@ -12,7 +13,9 @@ func RunView() {
 	app.InitDockerStatText()
 	app.InitHistoryTextView()
 	app.InitSystemText()
-	// app.InitProcessText()
+	if runtime.GOOS != "linux" {
+		app.InitProcessText()
+	}
 	app.InitGitStatText()
 
 	app.CreateBatteryTextView()
