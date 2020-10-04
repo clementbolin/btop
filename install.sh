@@ -1,6 +1,8 @@
-case [ $EUID -ne 0 ]; then
+if [[ $EUID -ne 0 ]]; then
     echo "You must run this with superuser priviliges.  Try \"sudo ./install.sh\"" 2>&1
-    exit 0
+    exit 1
+else
+    echo "Start install Btop..."
 fi
 
 unamestr="$(uname -s)"
@@ -8,7 +10,6 @@ email=""
 email_confirm=""
 case "${unamestr}" in
     Linux*)
-        echo "Start install Btop..."
         make build
         sudo mv ./bin/btop /usr/local/bin
         while [ -z $email ] || [ $email != $email_confirm ]
@@ -20,7 +21,6 @@ case "${unamestr}" in
         mv .btop_config ~/
         echo "Btop is available on your computer. Try \"btop\" for start";;
     Darwin*)
-        echo "Start install Btop..."
         make build
         sudo mv ./bin/btop /usr/local/bin
         while [ -z $email ] || [ $email != $email_confirm ]
