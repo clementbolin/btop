@@ -1,4 +1,5 @@
 # Btop
+![Go](https://github.com/ClementBolin/btop/workflows/Go/badge.svg)
 
 Btop is your personal terminal dashboard.
 The goal of this project, is to display many information of your system
