@@ -34,7 +34,16 @@ func (h *History) GetHistoryCmd() {
 		tabData := strings.Split(data, "\n")
 		h.cmd = make([]string, 25)
 		j := 0
-		for i := len(tabData) - 25; i != len(tabData) - 1; i++ {
+		i := 0
+		if len(tabData) - 25 <= 0 {
+			i = len(tabData)
+		} else {
+			i = len(tabData) - 25
+		}
+		for ; i != len(tabData) - 1; i++ {
+			if tabData[i] == "" {
+				return
+			}
 			h.cmd[j] = getNameCmdZSH(tabData[i])
 			j++
 		}
@@ -73,7 +82,7 @@ func (h *History) checkError(err error) (bool) {
 func getNameCmdZSH(cmd string) string {
 	var new string
 	for i := 0; cmd[i] != ';'; i++ {
-		new = cmd[i+2:len(cmd)]		
+		new = cmd[i+2:]		
 	}
 	return new
 }
