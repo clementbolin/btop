@@ -1,12 +1,15 @@
 #!/bin/bash
-[ "$UID" -eq 0 ] || { echo "This script must be run as root."; exit 1;}
+if [[ $EUID -ne 0 ]]; then
+    echo "You must run this with superuser priviliges.  Try \"sudo ./install.sh\"" 2>&1
+    exit 1
+else
+    echo "Installing btop..."
+fi
 
-unamestr="$(uname -s)"
-email=""
-email_confirm=""
-case "${unamestr}" in
-    Linux*)
-        go build -o ./bin/btop
+function intall_linux() {
+    if go build -o ./bin/btop &> logs ; then
+        email = ""
+        email_confirm = ""
         sudo mv ./bin/btop /usr/local/bin
         while [ -z $email ] || [ $email != $email_confirm ]
         do
@@ -15,9 +18,17 @@ case "${unamestr}" in
         done
         echo $email > .btop_config
         mv .btop_config ~/
-        echo "Btop is available on your computer. Try \"btop\" for start";;
-    Darwin*)
-        go build -o ./bin/btop
+        rm ./logs
+        echo "Btop is available on your computer. Try \"btop\" for start";
+    fi
+    echo "Your compil has failed";
+    tail -n 10 logs
+}
+
+function intall_unix() {
+    if go build -o ./bin/btop &> logs ; then
+        email=""
+        email_confirm=""
         sudo mv ./bin/btop /usr/local/bin
         while [ -z $email ] || [ $email != $email_confirm ]
         do
@@ -26,6 +37,16 @@ case "${unamestr}" in
         done
         echo $email > .btop_config
         mv .btop_config ~/
-        echo "Btop is available on your computer. Try \"btop\" for start 🚀";;
-    *)          echo "Your system is not compatible"
+        rm ./logs
+        echo "Btop is available on your computer. Try \"btop\" for start 🚀";
+    fi
+    echo "Your compil has failed";
+    tail -n 10 logs
+}
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     intall_linux;;
+    Darwin*)    intall_unix;;
+    *)    echo "Project not avaible on your system";;
 esac
