@@ -1,4 +1,4 @@
-FROM golang:1.24.3
+FROM golang:1.25rc2
 
 LABEL version="1.0" maintainer="Clement Bolin <clement.bolin@epitech.eu>"
 
